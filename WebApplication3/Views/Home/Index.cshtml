@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<br />
+<div class="row">
+    <div class="container">
+
+        <div class="row">
+
+            <button id="subscribe">Substack</button>
+            <button id="youtube">YouTube</button>
+            <button id="change">Change & Play</button>
+            <button id="remove">Remove</button>
+
+        </div>
+
+        <br />
+
+        <div class="row">
+
+            <div id="load-subscribe">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    function appendSubstack() {
+
+        var loadSubscribe = document.getElementById("load-subscribe");
+
+        // create iframe
+        var substack = document.createElement("iframe");
+
+        // Add attributes
+        substack.src = "https://devpractical.substack.com/embed";
+
+        // Set size and hide iframe border
+        substack.width = "300";
+        substack.height = "150";
+        substack.frameBorder = "0";
+        substack.scrolling = "0";
+        substack.style.border = "none";
+        substack.style.background = "white";
+        substack.id = "iframe_item";
+
+        // Add iframe
+        loadSubscribe.appendChild(substack);
+
+    }
+
+    function appendYouTube() {
+
+        var loadSubscribe = document.getElementById("load-subscribe");
+
+        // create iframe
+        var youtube = "<iframe class='youtube-video' id='iframe_item' width='560' height='315' src='https://www.youtube.com/embed/LrJbrydDf2s?enablejsapi=1&version=3&playerapiid=ytplayer' modestbranding='0' controls='0' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+
+        // add iframe
+        loadSubscribe.innerHTML = youtube;
+
+    }
+
+    function appendYouTubeByID(videoID) {
+
+        var loadSubscribe = document.getElementById("load-subscribe");
+
+        // create iframe
+        var youtube = "<iframe class='youtube-video' id='iframe_item' width='560' height='315' src='https://www.youtube.com/embed/" + videoID + "?enablejsapi=1&version=3&playerapiid=ytplayer' modestbranding='0' controls='0' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+
+        // add iframe
+        loadSubscribe.innerHTML = youtube;
+
+    }
+
+    function removeIframe() {
+
+        //check exist before remove
+        if ($('#iframe_item').length) {
+
+            //remove iframe
+            $("#iframe_item").remove();
+
+        } else {
+
+            //show warning
+            alert("iframe not exist");
+
+        }
+
+    }
+
+    // event to trigger iframe loading
+    document.getElementById("subscribe").addEventListener("click", function () {
+
+        // Add Iframe to webpage
+        appendSubstack();
+
+    })
+
+    // event to trigger iframe loading
+    document.getElementById("youtube").addEventListener("click", function () {
+
+        // Add Iframe to webpage
+        appendYouTube();
+
+    })
+
+    // event to trigger iframe loading
+    document.getElementById("change").addEventListener("click", function () {
+
+        if ($('#iframe_item').length) {
+
+            removeIframe();
+
+            appendYouTubeByID("CYk3IhshUt0");
+
+            var delayInMilliseconds = 200; //1000 = 1 second, 200 minimum
+
+            //wait for youtube ready 200 millisecond
+            setTimeout(function () {
+
+                //play youtube
+                $('.youtube-video')[0].contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+
+            }, delayInMilliseconds);
+
+        } else {
+
+            //show warning
+            alert("iframe not exist");
+
+        }
+
+    })
+
+    // event to trigger iframe loading
+    document.getElementById("remove").addEventListener("click", function () {
+
+        // Remove Iframe to webpage
+        removeIframe();
+
+    })
+
+</script>
